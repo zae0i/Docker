@@ -5,6 +5,7 @@ import likelion.BE.docker.dto.PostRequest;
 import likelion.BE.docker.dto.PostResponse;
 import likelion.BE.docker.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,6 +25,7 @@ public class PostService {
     public PostResponse createPost(PostRequest request) {
         Post post = new Post(request.title(), request.content(), request.author());
         Post saved = postRepository.save(post);
+        log.info("[게시물 등록] id={}, title={}, author={}", saved.getId(), saved.getTitle(), saved.getAuthor());
         return PostResponse.from(saved);
     }
 
